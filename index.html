@@ -2,40 +2,35 @@
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Ne ljuti se čoveče — Nivoi</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c0e19">
+<title>Ne ljuti se čoveče</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0c0e19;--panel:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--txt:#eef0ff;--mut:#9aa0c3;
---red:#ff4d6d;--blue:#4dabff;--green:#3ddc97;--yellow:#ffc93f}
+--red:#ff4d6d;--blue:#4dabff;--green:#3ddc97;--yellow:#ffc93f;--accent:#8b7cff}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--txt);min-height:100vh;display:flex;justify-content:center;
+html,body{max-width:100%;overflow-x:hidden}
+body{font-family:Jost,system-ui,sans-serif;color:var(--txt);min-height:100vh;display:flex;justify-content:center;
 background:radial-gradient(circle at 15% 0%,#2b1f55 0,transparent 55%),radial-gradient(circle at 100% 100%,#0e3b4f 0,transparent 55%),var(--bg);background-attachment:fixed}
 button{font:inherit;color:inherit;border:none;background:none;cursor:pointer}
-.app{width:100%;max-width:520px;padding:16px 14px 28px}
+.app{width:100%;max-width:520px;padding:16px 14px calc(28px + env(safe-area-inset-bottom,0px))}
 .screen{display:none;flex-direction:column;gap:14px}
 .screen.on{display:flex}
-h1{font-size:30px;font-weight:850;letter-spacing:-.6px;text-align:center;margin-top:8px;line-height:1.1}
+h1,h2,.ttl b{font-family:"Playfair Display",Georgia,serif;font-style:normal;font-weight:700}
+h1{font-size:clamp(28px,8vw,36px);letter-spacing:-.5px;text-align:center;margin-top:10px;line-height:1.15}
 h1 span{background:linear-gradient(90deg,var(--red),var(--yellow),var(--green),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{text-align:center;color:var(--mut);font-size:14px}
-.levels{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.lvl{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:5px;transition:transform .15s,border-color .2s;position:relative;overflow:hidden}
-.lvl:not(.locked):active{transform:scale(.97)}
-.lvl:not(.locked):hover{border-color:rgba(255,255,255,.3)}
-.lvl.locked{opacity:.38;cursor:not-allowed}
-.lvl .n{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.lvl .t{font-weight:750;font-size:16px}
-.lvl .d{font-size:12px;color:var(--mut);line-height:1.35}
-.lvl .s{font-size:15px;letter-spacing:2px;color:var(--yellow)}
-.lvl .s i{font-style:normal;color:rgba(255,255,255,.18)}
-.lvl.cur{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset}
+.sub{text-align:center;color:var(--mut);font-size:14px;margin-bottom:2px}
 details{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:14px;color:var(--mut);line-height:1.5}
-details summary{color:var(--txt);font-weight:650;cursor:pointer}
+details summary{color:var(--txt);font-weight:650;cursor:pointer;font-family:Jost,sans-serif}
 details ul{padding-left:18px;margin-top:8px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.icon{width:40px;height:40px;border-radius:12px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:18px}
-.ttl{text-align:center;flex:1}
-.ttl b{display:block;font-size:16px}
-.ttl small{color:var(--mut);font-size:12px}
+.icon{width:40px;height:40px;border-radius:12px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.ttl{text-align:center;flex:1;min-width:0}
+.ttl b{display:block;font-size:17px}
+.ttl small{color:var(--mut);font-size:12px;font-family:Jost,sans-serif}
 .board{position:relative;width:100%;aspect-ratio:1;border-radius:22px;background:rgba(255,255,255,.035);border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.4)}
 .board.shake{animation:shake .35s}
 @keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
@@ -49,8 +44,6 @@ details ul{padding-left:18px;margin-top:8px}
 .cell.shield b{background:rgba(160,180,255,.14);border-color:rgba(160,180,255,.55)}
 .cell.boost b{background:rgba(190,110,255,.16);border-color:rgba(190,110,255,.6)}
 .cell.target b{box-shadow:0 0 0 3px #fff,0 0 14px #fff}
-.center{position:absolute;left:45.45%;top:45.45%;width:9.09%;height:9.09%;padding:.5%}
-.center div{width:100%;height:100%;border-radius:50%;background:conic-gradient(var(--blue) 0 25%,var(--green) 0 50%,var(--yellow) 0 75%,var(--red) 0);box-shadow:0 0 18px rgba(255,255,255,.25)}
 .piece{position:absolute;width:9.0909%;height:9.0909%;transition:left .14s ease,top .14s ease;z-index:5;pointer-events:none}
 .piece svg{position:absolute;left:50%;bottom:4%;width:92%;height:118%;transform:translateX(-50%);transform-origin:50% 100%;overflow:visible;filter:drop-shadow(0 3px 3px rgba(0,0,0,.45))}
 .piece.can{pointer-events:auto;cursor:pointer;z-index:40!important}
@@ -58,18 +51,40 @@ details ul{padding-left:18px;margin-top:8px}
 @keyframes hop{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}50%{transform:translateX(-50%) translateY(-14%) scale(1.08)}}
 .piece.pop svg{animation:pop .3s}
 @keyframes pop{50%{transform:translateX(-50%) scale(1.3,.85)}}
-.pick{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
-.pick h3{font-size:13px;color:var(--mut);font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.pick{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.pick h3{font-size:12px;color:var(--mut);font-weight:700;letter-spacing:.8px;text-transform:uppercase}
 .row{display:flex;gap:10px}
 .cbtn{flex:1;height:46px;border-radius:14px;background:var(--c);opacity:.45;border:3px solid transparent;transition:.15s;font-size:12px;font-weight:700;color:#111}
 .cbtn.on{opacity:1;border-color:#fff;box-shadow:0 0 14px var(--c)}
 .sbtn{flex:1;border-radius:14px;background:rgba(0,0,0,.2);border:2px solid transparent;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:650;color:var(--mut);transition:.15s}
 .sbtn svg{width:34px;height:44px;overflow:visible}
 .sbtn.on{border-color:var(--c);color:var(--txt);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.seg{display:flex;gap:4px;background:rgba(0,0,0,.25);padding:4px;border-radius:14px}
+.seg button{flex:1;padding:11px 8px;border-radius:11px;font-weight:650;color:var(--mut);font-size:14px;transition:.15s}
+.seg button.on{background:rgba(255,255,255,.12);color:var(--txt);box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.slots{display:flex;flex-direction:column;gap:8px}
+.slot{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;padding:8px 10px}
+.slot .dot{width:16px;height:16px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);flex-shrink:0}
+.slot .who{flex:1;font-weight:650;font-size:14px}
+.slot .who small{display:block;font-weight:500;color:var(--mut);font-size:11px}
+.toggle{display:flex;background:rgba(0,0,0,.28);border-radius:10px;padding:3px;gap:2px}
+.toggle button{padding:7px 10px;border-radius:8px;font-size:12px;font-weight:650;color:var(--mut)}
+.toggle button.on{background:rgba(255,255,255,.14);color:var(--txt)}
+.toggles{display:flex;flex-direction:column;gap:6px}
+.tog{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;transition:.15s}
+.tog.on{border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.06)}
+.tog .ic{font-size:18px;width:24px;text-align:center}
+.tog .tx{flex:1}
+.tog .tx b{display:block;font-size:14px;font-weight:650}
+.tog .tx small{color:var(--mut);font-size:12px}
+.sw{width:38px;height:22px;border-radius:11px;background:rgba(255,255,255,.15);position:relative;flex-shrink:0;transition:.2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.tog.on .sw{background:var(--green)}
+.tog.on .sw::after{left:19px}
 .toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);background:rgba(10,12,25,.88);border:1px solid var(--line);padding:10px 16px;border-radius:14px;font-weight:700;font-size:15px;opacity:0;transition:.25s;z-index:20;pointer-events:none;white-space:nowrap;backdrop-filter:blur(6px)}
 .toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .players{display:flex;gap:8px}
-.chip{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 6px;text-align:center;font-size:12px;transition:.2s;position:relative}
+.chip{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 6px;text-align:center;font-size:12px;transition:.2s;min-width:0}
 .chip .dot{width:10px;height:10px;border-radius:50%;background:var(--c);display:inline-block;margin-right:5px;vertical-align:middle}
 .chip .h{display:flex;gap:3px;justify-content:center;margin-top:5px}
 .chip .h i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15)}
@@ -85,7 +100,7 @@ details ul{padding-left:18px;margin-top:8px}
 @keyframes spin{0%{transform:translate(-50%,-50%) rotate(0)}50%{transform:translate(-50%,-50%) rotate(20deg) scale(.9)}100%{transform:translate(-50%,-50%) rotate(-15deg)}}
 .ctrl.ready{cursor:pointer}
 .status{flex:1;font-size:14px;line-height:1.4}
-.status b{display:block;font-size:16px;margin-bottom:2px}
+.status b{display:block;font-size:16px;margin-bottom:2px;font-family:Jost,sans-serif}
 .status small{color:var(--mut)}
 .legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:12px;color:var(--mut)}
 .legend span{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:4px 10px}
@@ -93,14 +108,19 @@ details ul{padding-left:18px;margin-top:8px}
 .modal.on{display:flex}
 .card{background:#171a2e;border:1px solid var(--line);border-radius:24px;padding:26px 22px;width:100%;max-width:360px;text-align:center;display:flex;flex-direction:column;gap:12px;animation:up .35s}
 @keyframes up{from{transform:translateY(30px);opacity:0}}
-.card h2{font-size:26px}
-.card .bigs{font-size:38px;letter-spacing:6px;color:var(--yellow)}
-.card .bigs i{font-style:normal;color:rgba(255,255,255,.15)}
+.card h2{font-size:28px}
 .card p{color:var(--mut);font-size:14px}
-.btn{padding:14px;border-radius:14px;background:linear-gradient(90deg,#6c5cff,#4dabff);font-weight:750;font-size:15px}
+.btn{padding:15px;border-radius:14px;background:linear-gradient(90deg,#6c5cff,#4dabff);font-weight:750;font-size:16px}
 .btn.alt{background:var(--panel);border:1px solid var(--line)}
+.btn.go{margin-top:2px;letter-spacing:.2px}
 .conf{position:fixed;width:9px;height:14px;top:-20px;z-index:60;animation:fall linear forwards;pointer-events:none}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media (max-width:380px){
+  .app{padding:10px 10px 20px}
+  h1{font-size:26px;margin-top:4px}
+  .sbtn{font-size:11px}
+  .toggle button{padding:7px 7px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -108,12 +128,30 @@ details ul{padding-left:18px;margin-top:8px}
 
 <section class="screen on" id="menu">
   <h1><span>Ne ljuti se</span><br>čoveče</h1>
-  <p class="sub">10 nivoa · pametniji botovi · specijalna polja</p>
+  <p class="sub">Jedna igra, od početka do pobede</p>
+
   <div class="pick" id="picker">
-    <h3>Tvoja boja</h3><div class="row" id="colorRow"></div>
-    <h3>Figurice</h3><div class="row" id="styleRow"></div>
+    <h3>Tvoja boja</h3>
+    <div class="row" id="colorRow"></div>
+    <h3>Figurice</h3>
+    <div class="row" id="styleRow"></div>
   </div>
-  <div class="levels" id="levels"></div>
+
+  <div class="pick">
+    <h3>Broj igrača</h3>
+    <div class="seg" id="countRow"></div>
+    <h3>Ko igra</h3>
+    <div class="slots" id="slots"></div>
+    <div id="diffWrap">
+      <h3>Težina računara</h3>
+      <div class="seg" id="diffRow"></div>
+    </div>
+    <h3>Posebna polja</h3>
+    <div class="toggles" id="spRow"></div>
+  </div>
+
+  <button class="btn go" id="playBtn">Igraj</button>
+
   <details>
     <summary>Pravila</summary>
     <ul>
@@ -121,8 +159,8 @@ details ul{padding-left:18px;margin-top:8px}
       <li>Kad nemaš figuru na tabli, imaš 3 pokušaja da dobiješ 6.</li>
       <li>Staneš na protivnika → vraćaš ga u kućicu.</li>
       <li>U cilj ulaziš tačnim brojem, bez preskakanja svojih figura.</li>
-      <li><b>★ Zvezda</b> – bacaš ponovo. <b>🛡 Štit</b> – tu niko ne može da te pojede. <b>⚡ Turbo</b> – ideš još 3 polja.</li>
-      <li>Pobeđuje ko prvi uvede sve 4 figure. Što manje protivnik stigne, više zvezdica dobijaš.</li>
+      <li>Pobeđuje ko prvi uvede sve 4 figure.</li>
+      <li>Ako su uključena, <b>★ Zvezda</b> daje još jedan bacaj, <b>🛡 Štit</b> štiti od jedenja, a <b>⚡ Turbo</b> dodaje još 3 polja.</li>
     </ul>
   </details>
 </section>
@@ -130,7 +168,7 @@ details ul{padding-left:18px;margin-top:8px}
 <section class="screen" id="game">
   <div class="top">
     <button class="icon" id="back" aria-label="Meni">←</button>
-    <div class="ttl"><b id="lvTitle"></b><small id="lvDesc"></small></div>
+    <div class="ttl"><b id="lvTitle">Ne ljuti se čoveče</b><small id="lvDesc"></small></div>
     <button class="icon" id="snd" aria-label="Zvuk">🔊</button>
   </div>
   <div class="players" id="players"></div>
@@ -145,55 +183,13 @@ details ul{padding-left:18px;margin-top:8px}
 
 <div class="modal" id="modal"><div class="card" id="mcard"></div></div>
 
-<script>
-const PATH=[[0,4],[1,4],[2,4],[3,4],[4,4],[4,3],[4,2],[4,1],[4,0],[5,0],[6,0],[6,1],[6,2],[6,3],[6,4],[7,4],[8,4],[9,4],[10,4],[10,5],[10,6],[9,6],[8,6],[7,6],[6,6],[6,7],[6,8],[6,9],[6,10],[5,10],[4,10],[4,9],[4,8],[4,7],[4,6],[3,6],[2,6],[1,6],[0,6],[0,5]];
-const COLORS=[
- {id:'red',name:'Crveni',v:'var(--red)',hex:'#ff4d6d',start:0,lane:[[1,5],[2,5],[3,5],[4,5]],yard:[[0,0],[1,0],[0,1],[1,1]]},
- {id:'blue',name:'Plavi',v:'var(--blue)',hex:'#4dabff',start:10,lane:[[5,1],[5,2],[5,3],[5,4]],yard:[[9,0],[10,0],[9,1],[10,1]]},
- {id:'green',name:'Zeleni',v:'var(--green)',hex:'#3ddc97',start:20,lane:[[9,5],[8,5],[7,5],[6,5]],yard:[[9,9],[10,9],[9,10],[10,10]]},
- {id:'yellow',name:'Žuti',v:'var(--yellow)',hex:'#ffc93f',start:30,lane:[[5,9],[5,8],[5,7],[5,6]],yard:[[0,9],[1,9],[0,10],[1,10]]}];
-const SPOS={star:[6,16,26,36],shield:[8,18,28,38],boost:[3,13,23,33]};
-const ICON={star:'★',shield:'🛡',boost:'⚡'};
-const ALL=['star','shield','boost'];
-const LEVELS=[
- {name:'Prvi korak',desc:'1 protivnik · lak',bots:['easy'],sp:[]},
- {name:'Trojka',desc:'2 protivnika · laki',bots:['easy','easy'],sp:[]},
- {name:'Zvezdana staza',desc:'1 protivnik · srednji · ★',bots:['medium'],sp:['star']},
- {name:'Puna tabla',desc:'3 protivnika · laki · ★',bots:['easy','easy','easy'],sp:['star']},
- {name:'Pod štitom',desc:'2 protivnika · srednji · ★ 🛡',bots:['medium','medium'],sp:['star','shield']},
- {name:'Turbo',desc:'2 protivnika · srednji · ★ 🛡 ⚡',bots:['medium','medium'],sp:ALL},
- {name:'Gužva',desc:'3 protivnika · mešano · sva polja',bots:['medium','hard','medium'],sp:ALL},
- {name:'Lukavci',desc:'2 protivnika · teški · sva polja',bots:['hard','hard'],sp:ALL},
- {name:'Arena',desc:'3 protivnika · teški · sva polja',bots:['hard','hard','hard'],sp:ALL},
- {name:'Majstor',desc:'3 teška · bez štitova, bez milosti',bots:['hard','hard','hard'],sp:['star','boost']}];
-const LVNAME={easy:'lak',medium:'srednji',hard:'težak'};
+<script type="module">
+import {
+  COLORS, PATH, LVNAME, ALL_SPECIALS, createGame as makeState,
+  resolveRoll, nextTurn as advanceTurn, aiPick,
+  coordsOf, absOf, special, occAt
+} from './game.js';
 
-let PROG={unlocked:1,stars:{},color:0,style:'man'};
-try{const s=localStorage.getItem('nljc-nivoi');if(s)PROG=Object.assign(PROG,JSON.parse(s))}catch(e){}
-function save(){try{localStorage.setItem('nljc-nivoi',JSON.stringify(PROG))}catch(e){}}
-
-const $=id=>document.getElementById(id);
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-
-/* ---------- zvuk ---------- */
-let AC=null,SOUND=true;
-function sfx(t){
- if(!SOUND)return;
- try{
-  if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
-  const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);
-  const n=AC.currentTime;
-  const m={step:[520,.04,'sine',.05],roll:[300,.05,'square',.03],out:[660,.15,'triangle',.12],hit:[140,.25,'sawtooth',.12],star:[880,.2,'sine',.1],win:[700,.5,'triangle',.15],home:[990,.18,'sine',.1]}[t];
-  o.type=m[2];o.frequency.setValueAtTime(m[0],n);
-  if(t==='hit')o.frequency.exponentialRampToValueAtTime(60,n+m[1]);
-  if(t==='star'||t==='win'||t==='home')o.frequency.exponentialRampToValueAtTime(m[0]*1.6,n+m[1]);
-  g.gain.setValueAtTime(m[3],n);g.gain.exponentialRampToValueAtTime(.001,n+m[1]);
-  o.start(n);o.stop(n+m[1]+.02);
- }catch(e){}
-}
-$('snd').onclick=()=>{SOUND=!SOUND;$('snd').textContent=SOUND?'🔊':'🔇'};
-
-/* ---------- figurice ---------- */
 const DK='color-mix(in srgb,var(--c) 62%,#000)';
 const FIG={
  man:`<svg viewBox="0 0 40 52"><ellipse cx="20" cy="49" rx="12" ry="2.6" fill="rgba(0,0,0,.35)"/>
@@ -219,247 +215,303 @@ const FIG={
   <path d="M8 47 Q8 41 14 39 L16 27 Q11 24 12 18 A8 8 0 1 1 28 18 Q29 24 24 27 L26 39 Q32 41 32 47 Z" fill="var(--c)" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
   <ellipse cx="17" cy="13" rx="3" ry="2.2" fill="#fff" opacity=".45"/></svg>`};
 const STYLES=[['man','Čovečuljak'],['gnome','Patuljak'],['classic','Klasična']];
+const ICON={star:'★',shield:'🛡',boost:'⚡'};
+const SP_INFO={
+  star:{name:'Zvezda',desc:'Bacaš ponovo'},
+  shield:{name:'Štit',desc:'Tu te niko ne jede'},
+  boost:{name:'Turbo',desc:'Ideš još 3 polja'}
+};
+
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+let SETTINGS={color:0,style:'man',sound:true,count:4,modes:['human','bot','bot','bot'],difficulty:'medium',specials:['star','shield','boost']};
+try{
+  const s=localStorage.getItem('nljc-igra');
+  if(s){
+    const p=JSON.parse(s);
+    SETTINGS=Object.assign(SETTINGS,p);
+    if(!Array.isArray(SETTINGS.modes)) SETTINGS.modes=['human','bot','bot','bot'];
+    SETTINGS.modes[0]='human';
+    if(!Array.isArray(SETTINGS.specials)) SETTINGS.specials=ALL_SPECIALS.slice();
+  }
+}catch(e){}
+function save(){try{localStorage.setItem('nljc-igra',JSON.stringify(SETTINGS))}catch(e){}}
+
+let SOUND=SETTINGS.sound!==false;
+let AC=null;
+function sfx(t){
+  if(!SOUND)return;
+  try{
+    if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);
+    const n=AC.currentTime;
+    const m={step:[520,.04,'sine',.05],roll:[300,.05,'square',.03],out:[660,.15,'triangle',.12],hit:[140,.25,'sawtooth',.12],star:[880,.2,'sine',.1],win:[700,.5,'triangle',.15],home:[990,.18,'sine',.1]}[t];
+    o.type=m[2];o.frequency.setValueAtTime(m[0],n);
+    if(t==='hit')o.frequency.exponentialRampToValueAtTime(60,n+m[1]);
+    if(t==='star'||t==='win'||t==='home')o.frequency.exponentialRampToValueAtTime(m[0]*1.6,n+m[1]);
+    g.gain.setValueAtTime(m[3],n);g.gain.exponentialRampToValueAtTime(.001,n+m[1]);
+    o.start(n);o.stop(n+m[1]+.02);
+  }catch(e){}
+}
+function syncSound(){ $('snd').textContent=SOUND?'🔊':'🔇'; SETTINGS.sound=SOUND; save(); }
+$('snd').onclick=()=>{SOUND=!SOUND;syncSound()};
+
 function renderPicker(){
- const c=PROG.color;
- $('picker').style.setProperty('--c',COLORS[c].v);
- $('colorRow').innerHTML=COLORS.map((C,i)=>`<button class="cbtn${i===c?' on':''}" style="--c:${C.v}" data-c="${i}" aria-label="${C.name}">${i===c?'✓':''}</button>`).join('');
- $('styleRow').innerHTML=STYLES.map(([k,n])=>`<button class="sbtn${k===PROG.style?' on':''}" data-s="${k}" style="--c:${COLORS[c].v}">${FIG[k]}${n}</button>`).join('');
- $('colorRow').querySelectorAll('button').forEach(b=>b.onclick=()=>{PROG.color=+b.dataset.c;save();sfx('step');renderPicker()});
- $('styleRow').querySelectorAll('button').forEach(b=>b.onclick=()=>{PROG.style=b.dataset.s;save();sfx('step');renderPicker()});
+  const c=SETTINGS.color;
+  $('picker').style.setProperty('--c',COLORS[c].v);
+  $('colorRow').innerHTML=COLORS.map((C,i)=>`<button class="cbtn${i===c?' on':''}" style="--c:${C.v}" data-c="${i}" aria-label="${C.name}">${i===c?'✓':''}</button>`).join('');
+  $('styleRow').innerHTML=STYLES.map(([k,n])=>`<button class="sbtn${k===SETTINGS.style?' on':''}" data-s="${k}" style="--c:${COLORS[c].v}">${FIG[k]}${n}</button>`).join('');
+  $('colorRow').querySelectorAll('button').forEach(b=>b.onclick=()=>{SETTINGS.color=+b.dataset.c;save();sfx('step');renderMenu()});
+  $('styleRow').querySelectorAll('button').forEach(b=>b.onclick=()=>{SETTINGS.style=b.dataset.s;save();sfx('step');renderMenu()});
 }
 
-/* ---------- meni ---------- */
-function starStr(n){let s='';for(let i=0;i<3;i++)s+=i<n?'★':'<i>★</i>';return s}
 function renderMenu(){
- const el=$('levels');el.innerHTML='';
- LEVELS.forEach((L,i)=>{
-  const locked=i+1>PROG.unlocked;
-  const b=document.createElement('button');
-  b.className='lvl'+(locked?' locked':'')+(i+1===PROG.unlocked&&!PROG.stars[i]?' cur':'');
-  b.innerHTML=`<span class="n">Nivo ${i+1}${locked?' · 🔒':''}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span><span class="s">${starStr(PROG.stars[i]||0)}</span>`;
-  if(!locked)b.onclick=()=>{sfx('step');newGame(i)};
-  el.appendChild(b);
- });
+  const n=SETTINGS.count;
+  SETTINGS.modes[0]='human';
+  while(SETTINGS.modes.length<4) SETTINGS.modes.push('bot');
+  SETTINGS.modes=SETTINGS.modes.slice(0,4);
+
+  $('countRow').innerHTML=[2,3,4].map(k=>`<button class="${k===n?'on':''}" data-n="${k}">${k}</button>`).join('');
+  $('countRow').querySelectorAll('button').forEach(b=>b.onclick=()=>{SETTINGS.count=+b.dataset.n;save();sfx('step');renderMenu()});
+
+  const offs=n===2?[0,2]:n===3?[0,1,3]:[0,1,2,3];
+  $('slots').innerHTML=offs.map((o,i)=>{
+    const col=COLORS[(SETTINGS.color+o)%4];
+    const human=SETTINGS.modes[i]==='human';
+    const label=i===0?'Ti':(human?'Čovek':'Računar');
+    const sub=i===0?'Ti vodiš ovu boju':col.name;
+    const tog=i===0?'':`<div class="toggle">
+      <button class="${human?'on':''}" data-i="${i}" data-m="human">Čovek</button>
+      <button class="${!human?'on':''}" data-i="${i}" data-m="bot">Računar</button>
+    </div>`;
+    return `<div class="slot" style="--c:${col.v}"><span class="dot"></span><div class="who">${label}<small>${sub}</small></div>${tog}</div>`;
+  }).join('');
+  $('slots').querySelectorAll('.toggle button').forEach(b=>b.onclick=()=>{
+    SETTINGS.modes[+b.dataset.i]=b.dataset.m;save();sfx('step');renderMenu();
+  });
+
+  const hasBot=offs.some((_,i)=>i>0&&SETTINGS.modes[i]==='bot');
+  $('diffWrap').style.display=hasBot?'':'none';
+  $('diffRow').innerHTML=[['easy','Lak'],['medium','Srednji'],['hard','Težak']].map(([k,n])=>
+    `<button class="${SETTINGS.difficulty===k?'on':''}" data-d="${k}">${n}</button>`).join('');
+  $('diffRow').querySelectorAll('button').forEach(b=>b.onclick=()=>{SETTINGS.difficulty=b.dataset.d;save();sfx('step');renderMenu()});
+
+  $('spRow').innerHTML=ALL_SPECIALS.map(t=>{
+    const on=SETTINGS.specials.includes(t);
+    return `<button class="tog${on?' on':''}" data-t="${t}"><span class="ic">${ICON[t]}</span><span class="tx"><b>${SP_INFO[t].name}</b><small>${SP_INFO[t].desc}</small></span><span class="sw"></span></button>`;
+  }).join('');
+  $('spRow').querySelectorAll('.tog').forEach(b=>b.onclick=()=>{
+    const t=b.dataset.t;
+    const set=new Set(SETTINGS.specials);
+    if(set.has(t)) set.delete(t); else set.add(t);
+    SETTINGS.specials=ALL_SPECIALS.filter(x=>set.has(x));
+    save();sfx('step');renderMenu();
+  });
+
+  renderPicker();
 }
+
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
 
-/* ---------- igra ---------- */
-let G=null,CELLS={},GID=0;
-const key=(c,r)=>c+','+r;
-function special(a){if(!G)return null;for(const t of G.sp)if(SPOS[t].includes(a))return t;return null}
-function absOf(pl,p){return (COLORS[pl.c].start+p)%40}
-function coordsOf(pl,p,i){const C=COLORS[pl.c];if(p===-1)return C.yard[i];if(p<40)return PATH[absOf(pl,p)];return C.lane[p-40]}
-function occAt(a,except){
- for(const op of G.players){if(op===except)continue;
-  for(let i=0;i<4;i++){const p=op.pieces[i];if(p>=0&&p<40&&absOf(op,p)===a)return{pl:op,i}}}
- return null;
+function gameSubtitle(state){
+  const bots=state.players.filter(p=>!p.human).length;
+  const humans=state.players.filter(p=>p.human).length;
+  const parts=[state.players.length+' igrača'];
+  if(bots&&humans===1) parts.push(bots===1?'ti protiv računara':`ti + ${bots} bota`);
+  else if(bots&&humans>1) parts.push(`${humans} čoveka + ${bots} ${bots===1?'bot':'bota'}`);
+  else parts.push('samo ljudi');
+  if(bots) parts.push(LVNAME[state.difficulty]);
+  if(state.specials.length) parts.push(state.specials.map(t=>ICON[t]).join(' '));
+  else parts.push('klasična pravila');
+  return parts.join(' · ');
 }
 
-function newGame(li){
- const L=LEVELS[li];
- const me=PROG.color;
- const rel=L.bots.length===1?[2]:L.bots.length===2?[1,3]:[1,2,3];
- GID++;
- G={id:GID,li,L,sp:new Set(L.sp),turn:0,tries:0,dice:null,busy:false,await:null,over:false,
-  players:[{c:me,human:true,pieces:[-1,-1,-1,-1]}].concat(rel.map((o,i)=>({c:(me+o)%4,human:false,ai:L.bots[i],pieces:[-1,-1,-1,-1]})))};
- $('lvTitle').textContent=`Nivo ${li+1}: ${L.name}`;
- $('lvDesc').textContent=L.desc;
- $('legend').innerHTML=L.sp.length?L.sp.map(t=>`<span>${ICON[t]} ${{star:'bacaš ponovo',shield:'sigurno polje',boost:'+3 polja'}[t]}</span>`).join(''):'<span>Klasična pravila</span>';
- buildBoard();show('game');renderAll();startTurn();
+let G=null,CELLS={},GID=0;
+const key=(c,r)=>c+','+r;
+
+function newGame(){
+  GID++;
+  const state=makeState(SETTINGS);
+  G=Object.assign(state,{id:GID,busy:false,await:null});
+  $('lvTitle').textContent='Ne ljuti se čoveče';
+  $('lvDesc').textContent=gameSubtitle(G);
+  $('legend').innerHTML=G.specials.length
+    ? G.specials.map(t=>`<span>${ICON[t]} ${SP_INFO[t].desc.toLowerCase()}</span>`).join('')
+    : '<span>Klasična pravila</span>';
+  buildBoard();show('game');renderAll();startTurn();
 }
 
 function buildBoard(){
- const B=$('board');[...B.querySelectorAll('.cell,.piece,.yardbg')].forEach(e=>e.remove());CELLS={};
- const pos=(el,c,r)=>{el.style.left=(c*100/11)+'%';el.style.top=(r*100/11)+'%'};
- const mk=(c,r,cls,col,txt)=>{const d=document.createElement('div');d.className='cell '+cls;if(col)d.style.setProperty('--c',col);d.innerHTML=`<b>${txt||''}</b>`;pos(d,c,r);B.appendChild(d);CELLS[key(c,r)]=d;return d};
- COLORS.forEach((C,ci)=>{
-  const y=document.createElement('div');y.className='yardbg';y.style.setProperty('--c',C.v);pos(y,Math.min(C.yard[0][0],C.yard[3][0]),Math.min(C.yard[0][1],C.yard[3][1]));
-  y.style.opacity=G.players.some(p=>p.c===ci)?'.16':'.05';B.appendChild(y);
- });
- PATH.forEach(([c,r],a)=>{
-  const st=COLORS.find(C=>C.start===a);const sp=special(a);
-  if(st)mk(c,r,'start',st.v,'');else mk(c,r,sp||'',null,sp?ICON[sp]:'');
- });
- COLORS.forEach(C=>{C.lane.forEach(([c,r])=>mk(c,r,'col',C.v));C.yard.forEach(([c,r])=>mk(c,r,'yard',C.v))});
- G.players.forEach((pl,pi)=>{pl.el=[];for(let i=0;i<4;i++){
-  const p=document.createElement('div');p.className='piece';p.style.setProperty('--c',COLORS[pl.c].v);p.innerHTML=FIG[PROG.style]||FIG.man;
-  p.onclick=()=>pickPiece(pi,i);B.appendChild(p);pl.el.push(p)}});
+  const B=$('board');[...B.querySelectorAll('.cell,.piece,.yardbg')].forEach(e=>e.remove());CELLS={};
+  const pos=(el,c,r)=>{el.style.left=(c*100/11)+'%';el.style.top=(r*100/11)+'%'};
+  const mk=(c,r,cls,col,txt)=>{const d=document.createElement('div');d.className='cell '+cls;if(col)d.style.setProperty('--c',col);d.innerHTML=`<b>${txt||''}</b>`;pos(d,c,r);B.appendChild(d);CELLS[key(c,r)]=d;return d};
+  COLORS.forEach((C,ci)=>{
+    const y=document.createElement('div');y.className='yardbg';y.style.setProperty('--c',C.v);
+    pos(y,Math.min(C.yard[0][0],C.yard[3][0]),Math.min(C.yard[0][1],C.yard[3][1]));
+    y.style.opacity=G.players.some(p=>p.c===ci)?'.16':'.05';B.appendChild(y);
+  });
+  PATH.forEach(([c,r],a)=>{
+    const st=COLORS.find(C=>C.start===a);const sp=special(G,a);
+    if(st) mk(c,r,'start',st.v,''); else mk(c,r,sp||'',null,sp?ICON[sp]:'');
+  });
+  COLORS.forEach(C=>{C.lane.forEach(([c,r])=>mk(c,r,'col',C.v));C.yard.forEach(([c,r])=>mk(c,r,'yard',C.v))});
+  G.players.forEach((pl,pi)=>{pl.el=[];for(let i=0;i<4;i++){
+    const p=document.createElement('div');p.className='piece';p.style.setProperty('--c',COLORS[pl.c].v);p.innerHTML=FIG[SETTINGS.style]||FIG.man;
+    p.onclick=()=>pickPiece(pi,i);B.appendChild(p);pl.el.push(p);
+  }});
 }
 
 function renderPieces(){
- G.players.forEach(pl=>pl.pieces.forEach((p,i)=>{const [c,r]=coordsOf(pl,p,i);const e=pl.el[i];e.style.left=(c*100/11)+'%';e.style.top=(r*100/11)+'%';e.style.zIndex=10+r}));
+  G.players.forEach(pl=>pl.pieces.forEach((p,i)=>{
+    const [c,r]=coordsOf(pl,p,i);const e=pl.el[i];
+    e.style.left=(c*100/11)+'%';e.style.top=(r*100/11)+'%';e.style.zIndex=10+r;
+  }));
+}
+function playerLabel(pl){
+  if(pl===G.players[0]) return 'Ti';
+  const bot=pl.human?'':` <span style="color:var(--mut)">(${LVNAME[pl.ai]})</span>`;
+  return COLORS[pl.c].name+bot;
 }
 function renderPlayers(){
- $('players').innerHTML=G.players.map((pl,i)=>{
-  const C=COLORS[pl.c];const f=pl.pieces.filter(p=>p>=40).length;
-  return `<div class="chip${i===G.turn?' on':''}" style="--c:${C.v}"><span class="dot"></span>${pl.human?'Ti':C.name+' <span style="color:var(--mut)">('+LVNAME[pl.ai]+')</span>'}<div class="h">${[0,1,2,3].map(k=>`<i class="${k<f?'f':''}"></i>`).join('')}</div></div>`}).join('');
+  $('players').innerHTML=G.players.map((pl,i)=>{
+    const C=COLORS[pl.c];const f=pl.pieces.filter(p=>p>=40).length;
+    return `<div class="chip${i===G.turn?' on':''}" style="--c:${C.v}"><span class="dot"></span>${playerLabel(pl)}<div class="h">${[0,1,2,3].map(k=>`<i class="${k<f?'f':''}"></i>`).join('')}</div></div>`;
+  }).join('');
 }
 const PIPS={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
 function drawDice(v){const d=$('dice');d.innerHTML=[...Array(9)].map((_,i)=>`<i class="${v&&PIPS[v].includes(i)?'on':''}"></i>`).join('')}
+function humans(){return G.players.filter(p=>p.human).length}
 function renderStatus(){
- const pl=G.players[G.turn],C=COLORS[pl.c];
- $('dice').style.setProperty('--dc',C.hex);
- const ready=pl.human&&!G.busy&&!G.await&&!G.over;
- $('dice').classList.toggle('ready',ready);document.querySelector('.ctrl').classList.toggle('ready',ready);
- let t,s;
- if(pl.human){
-  t='Tvoj potez';
-  s=G.await?'Dodirni figuru koja treperi':(ready?(G.tries>0?`Baci kocku (pokušaj ${G.tries+1}/3)`:'Dodirni kocku u sredini table'):'…');
- }else{t=`${C.name} igra`;s='Bot razmišlja…'}
- $('status').innerHTML=`<b style="color:${C.v}">${t}</b><small>${s}</small>`;
+  const pl=G.players[G.turn],C=COLORS[pl.c];
+  $('dice').style.setProperty('--dc',C.hex);
+  const ready=pl.human&&!G.busy&&!G.await&&!G.over;
+  $('dice').classList.toggle('ready',ready);document.querySelector('.ctrl').classList.toggle('ready',ready);
+  let t,s;
+  if(pl.human){
+    t=humans()>1?(pl===G.players[0]?'Ti si na potezu':`${C.name}, tvoj potez`):'Tvoj potez';
+    s=G.await?'Dodirni figuru koja treperi':(ready?(G.tries>0?`Baci kocku (pokušaj ${G.tries+1}/3)`:'Dodirni kocku u sredini table'):'…');
+  }else{t=`${C.name} igra`;s='Računar razmišlja…'}
+  $('status').innerHTML=`<b style="color:${C.v}">${t}</b><small>${s}</small>`;
 }
 function renderAll(){renderPieces();renderPlayers();renderStatus();if(G.dice==null)drawDice(0)}
 
 let toastT;
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),900)}
 
-/* ---------- pravila poteza ---------- */
-function landOk(pl,i,from,t){
- if(t>43)return false;
- if(t>=40){for(let k=Math.max(from+1,40);k<=t;k++)if(pl.pieces.some((q,j)=>j!==i&&q===k))return false;return true}
- if(pl.pieces.some((q,j)=>j!==i&&q===t))return false;
- const a=absOf(pl,t);
- if(special(a)==='shield'&&occAt(a,pl))return false;
- return true;
-}
-function legal(pl,r){
- const res=[];
- pl.pieces.forEach((p,i)=>{
-  let t;
-  if(p===-1){if(r!==6)return;t=0}else t=p+r;
-  if(!landOk(pl,i,p,t))return;
-  let fin=t,boosted=false;
-  if(t<40&&p!==-1&&special(absOf(pl,t))==='boost'&&landOk(pl,i,t,t+3)){fin=t+3;boosted=true}
-  res.push({i,from:p,to:t,fin,boosted});
- });
- return res;
-}
-
-/* ---------- AI ---------- */
-function danger(pl,a){
- if(special(a)==='shield')return 0;
- let n=0;
- for(const op of G.players){if(op===pl)continue;
-  for(const p of op.pieces){if(p>=0&&p<40){const d=(a-absOf(op,p)+40)%40;if(d>=1&&d<=6&&p+d<40)n++}}
-  if(a===COLORS[op.c].start&&op.pieces.includes(-1))n+=.5;
- }
- return n;
-}
-function score(pl,m,hard){
- let s=0;const f=m.fin;
- if(f<40){
-  const a=absOf(pl,f),o=occAt(a,pl);
-  if(o)s+=50+(hard?o.pl.pieces[o.i]*0.8:0);
-  if(special(a)==='star')s+=15;
-  if(hard){s-=danger(pl,a)*(12+f*.6);if(special(a)==='shield')s+=6}
- }else s+=30;
- if(m.from===-1)s+=35;
- if(m.boosted)s+=6;
- if(hard&&m.from>=0&&m.from<40)s+=danger(pl,absOf(pl,m.from))*(10+m.from*.6);
- s+=(f-Math.max(m.from,0))*.5+Math.max(m.from,0)*.1;
- return s;
-}
-function aiPick(pl,ms){
- if(pl.ai==='easy')return Math.random()<.35?ms.reduce((a,b)=>score(pl,b,false)>score(pl,a,false)?b:a):ms[Math.floor(Math.random()*ms.length)];
- const hard=pl.ai==='hard';let best=ms[0],bs=-1e9;
- for(const m of ms){const s=score(pl,m,hard)+Math.random()*(hard?1:6);if(s>bs){bs=s;best=m}}
- return best;
-}
-
-/* ---------- tok igre ---------- */
 function alive(id){return G&&G.id===id&&!G.over}
 function startTurn(){
- G.tries=0;G.dice=null;renderAll();
- const id=G.id;
- if(!G.players[G.turn].human)setTimeout(()=>alive(id)&&roll(),650);
+  G.tries=0;G.dice=null;renderAll();
+  const id=G.id;
+  if(!G.players[G.turn].human) setTimeout(()=>alive(id)&&roll(),650);
 }
-$('dice').onclick=document.querySelector('.ctrl').onclick=()=>{const pl=G&&G.players[G.turn];if(pl&&pl.human&&!G.busy&&!G.await&&!G.over)roll()};
+$('dice').onclick=document.querySelector('.ctrl').onclick=()=>{
+  const pl=G&&G.players[G.turn];
+  if(pl&&pl.human&&!G.busy&&!G.await&&!G.over) roll();
+};
 
 async function roll(){
- const id=G.id,pl=G.players[G.turn];
- G.busy=true;renderStatus();
- const d=$('dice');d.classList.add('roll');
- for(let k=0;k<8;k++){drawDice(1+Math.floor(Math.random()*6));sfx('roll');await sleep(55)}
- d.classList.remove('roll');
- if(!alive(id))return;
- const r=1+Math.floor(Math.random()*6);G.dice=r;drawDice(r);
- await sleep(250);if(!alive(id))return;
- const ms=legal(pl,r);
- if(!ms.length){
-  G.tries++;
-  const noneOut=pl.pieces.every(p=>p===-1||p>=40);
-  if(noneOut&&r!==6&&G.tries<3){G.busy=false;renderStatus();if(!pl.human)setTimeout(()=>alive(id)&&roll(),450);return}
-  toast(pl.human?'Nema poteza':'Nema poteza');await sleep(700);if(!alive(id))return;
-  G.busy=false;nextTurn();return;
- }
- if(pl.human){
-  if(ms.length===1){await sleep(200);if(!alive(id))return;await go(ms[0]);return}
-  G.await=ms;G.busy=false;
-  ms.forEach(m=>{pl.el[m.i].classList.add('can');const [c,rr]=coordsOf(pl,m.fin,m.i);CELLS[key(c,rr)]&&CELLS[key(c,rr)].classList.add('target')});
-  renderStatus();
- }else{await sleep(350);if(!alive(id))return;await go(aiPick(pl,ms))}
+  const id=G.id,pl=G.players[G.turn];
+  G.busy=true;renderStatus();
+  const d=$('dice');d.classList.add('roll');
+  for(let k=0;k<8;k++){drawDice(1+Math.floor(Math.random()*6));sfx('roll');await sleep(55)}
+  d.classList.remove('roll');
+  if(!alive(id))return;
+  const r=1+Math.floor(Math.random()*6);G.dice=r;drawDice(r);
+  await sleep(250);if(!alive(id))return;
+  const res=resolveRoll(G,r);
+  if(res.kind==='retry'){
+    G.busy=false;renderStatus();
+    if(!pl.human) setTimeout(()=>alive(id)&&roll(),450);
+    return;
+  }
+  if(res.kind==='pass'){
+    toast('Nema poteza');await sleep(700);if(!alive(id))return;
+    G.busy=false;advanceTurn(G);startTurn();return;
+  }
+  const ms=res.moves;
+  if(pl.human){
+    if(ms.length===1){await sleep(200);if(!alive(id))return;await go(ms[0]);return}
+    G.await=ms;G.busy=false;
+    ms.forEach(m=>{pl.el[m.i].classList.add('can');const [c,rr]=coordsOf(pl,m.fin,m.i);CELLS[key(c,rr)]&&CELLS[key(c,rr)].classList.add('target')});
+    renderStatus();
+  }else{await sleep(350);if(!alive(id))return;await go(aiPick(G,pl,ms))}
 }
 function clearHL(){document.querySelectorAll('.piece.can').forEach(e=>e.classList.remove('can'));document.querySelectorAll('.cell.target').forEach(e=>e.classList.remove('target'))}
 function pickPiece(pi,i){
- if(!G||!G.await||pi!==G.turn)return;
- const m=G.await.find(x=>x.i===i);if(m)go(m);
+  if(!G||!G.await||pi!==G.turn)return;
+  const m=G.await.find(x=>x.i===i);if(m) go(m);
 }
+
 async function go(m){
- const id=G.id,pl=G.players[G.turn];
- G.await=null;G.busy=true;clearHL();renderStatus();
- if(m.from===-1){pl.pieces[m.i]=0;renderPieces();sfx('out');await sleep(220)}
- else for(let k=m.from+1;k<=m.to;k++){pl.pieces[m.i]=k;renderPieces();sfx('step');await sleep(150);if(!alive(id))return}
- if(m.boosted){toast('⚡ Turbo +3');sfx('star');await sleep(250);
-  for(let k=m.to+1;k<=m.fin;k++){pl.pieces[m.i]=k;renderPieces();sfx('step');await sleep(110);if(!alive(id))return}}
- const f=pl.pieces[m.i];let extra=false;
- const el=pl.el[m.i];el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
- if(f<40){
-  const a=absOf(pl,f),o=occAt(a,pl);
-  if(o){o.pl.pieces[o.i]=-1;sfx('hit');$('board').classList.remove('shake');void $('board').offsetWidth;$('board').classList.add('shake');
-   toast(pl.human?`Pojeo si ${COLORS[o.pl.c].name.toLowerCase()}og! 😈`:(o.pl.human?`${COLORS[pl.c].name} te pojeo 😤`:`${COLORS[pl.c].name} pojeo ${COLORS[o.pl.c].name.toLowerCase()}og`))}
-  if(special(a)==='star'){extra=true;setTimeout(()=>{if(alive(id)){toast('★ Bacaš ponovo');sfx('star')}},o?700:0)}
- }else sfx('home');
- renderPieces();renderPlayers();
- if(pl.pieces.every(p=>p>=40)){await sleep(400);end(pl);return}
- await sleep(150);if(!alive(id))return;
- G.busy=false;
- if(G.dice===6||extra){G.tries=0;renderStatus();if(!pl.human)setTimeout(()=>alive(id)&&roll(),600)}
- else nextTurn();
+  const id=G.id,pl=G.players[G.turn];
+  G.await=null;G.busy=true;clearHL();renderStatus();
+  if(m.from===-1){pl.pieces[m.i]=0;renderPieces();sfx('out');await sleep(220)}
+  else for(let k=m.from+1;k<=m.to;k++){pl.pieces[m.i]=k;renderPieces();sfx('step');await sleep(150);if(!alive(id))return}
+  if(m.boosted){
+    const mid=occAt(G, absOf(pl,m.to), pl);
+    if(mid){mid.pl.pieces[mid.i]=-1;sfx('hit');toast(eatMsg(pl,mid.pl));shake();await sleep(550);if(!alive(id))return}
+    toast('⚡ Turbo +3');sfx('star');await sleep(250);
+    for(let k=m.to+1;k<=m.fin;k++){pl.pieces[m.i]=k;renderPieces();sfx('step');await sleep(110);if(!alive(id))return}
+  }
+  const f=pl.pieces[m.i];
+  const el=pl.el[m.i];el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+  let star=false;
+  if(f<40){
+    const a=absOf(pl,f),o=occAt(G,a,pl);
+    if(o){o.pl.pieces[o.i]=-1;sfx('hit');shake();toast(eatMsg(pl,o.pl))}
+    if(special(G,a)==='star'){star=true;setTimeout(()=>{if(alive(id)){toast('★ Bacaš ponovo');sfx('star')}},o?700:0)}
+  }else sfx('home');
+  renderPieces();renderPlayers();
+  if(pl.pieces.every(p=>p>=40)){await sleep(400);end(pl);return}
+  await sleep(150);if(!alive(id))return;
+  G.busy=false;
+  if(G.dice===6||star){G.tries=0;renderStatus();if(!pl.human)setTimeout(()=>alive(id)&&roll(),600)}
+  else{advanceTurn(G);startTurn()}
 }
-function nextTurn(){G.turn=(G.turn+1)%G.players.length;startTurn()}
+function eatMsg(pl,op){
+  const adj=COLORS[op.c].name.toLowerCase()+'og';
+  if(pl.human&&pl===G.players[0]) return `Pojeo si ${adj}! 😈`;
+  if(op.human&&op===G.players[0]) return `${COLORS[pl.c].name} te pojeo 😤`;
+  return `${COLORS[pl.c].name} pojeo ${adj}`;
+}
+function shake(){const b=$('board');b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake')}
 
-/* ---------- kraj ---------- */
-function confetti(){const cs=['#ff4d6d','#4dabff','#3ddc97','#ffc93f','#b98cff'];
- for(let i=0;i<60;i++){const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cs[i%5];
-  c.style.animationDuration=(1.6+Math.random()*1.6)+'s';c.style.animationDelay=Math.random()*.5+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3800)}}
+function confetti(){
+  const cs=['#ff4d6d','#4dabff','#3ddc97','#ffc93f','#b98cff'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cs[i%5];
+    c.style.animationDuration=(1.6+Math.random()*1.6)+'s';c.style.animationDelay=Math.random()*.5+'s';
+    document.body.appendChild(c);setTimeout(()=>c.remove(),3800);
+  }
+}
 function end(pl){
- G.over=true;G.busy=false;renderStatus();
- const li=G.li,M=$('mcard');
- if(pl.human){
-  const best=Math.max(...G.players.filter(p=>!p.human).map(p=>p.pieces.filter(x=>x>=40).length));
-  const st=best===0?3:best<=2?2:1;
-  PROG.stars[li]=Math.max(PROG.stars[li]||0,st);
-  if(li+2>PROG.unlocked)PROG.unlocked=Math.min(LEVELS.length,li+2);save();
-  sfx('win');confetti();
-  const last=li===LEVELS.length-1;
-  M.innerHTML=`<h2>${last?'Ti si Majstor! 🏆':'Pobeda! 🎉'}</h2><div class="bigs">${starStr(st)}</div>
-   <p>${st===3?'Savršeno – nijedan protivnik nije stigao ni jednu figuru u cilj.':st===2?'Odlično! Za 3 zvezdice ne puštaj nikog u cilj.':'Tesno! Probaj ponovo za više zvezdica.'}</p>
-   ${last?'':'<button class="btn" id="mNext">Sledeći nivo →</button>'}
-   <button class="btn alt" id="mAgain">Igraj ponovo</button><button class="btn alt" id="mMenu">Meni</button>`;
- }else{
-  M.innerHTML=`<h2>Ne ljuti se! 😅</h2><p>${COLORS[pl.c].name} je prvi uveo sve figure.</p>
-   <button class="btn" id="mAgain">Pokušaj ponovo</button><button class="btn alt" id="mMenu">Meni</button>`;
- }
- $('modal').classList.add('on');
- const close=()=>$('modal').classList.remove('on');
- if($('mNext'))$('mNext').onclick=()=>{close();newGame(li+1)};
- $('mAgain').onclick=()=>{close();newGame(li)};
- $('mMenu').onclick=()=>{close();toMenu()};
+  G.over=true;G.busy=false;renderStatus();
+  const M=$('mcard');
+  const name=COLORS[pl.c].name;
+  const you=pl===G.players[0];
+  if(pl.human){
+    sfx('win');confetti();
+    M.innerHTML=`<h2>${you?'Pobeda! 🎉':name+' je pobedio! 🎉'}</h2>
+      <p>${you?'Prvi si uveo sve četiri figure u cilj.':'Sve četiri figure su stigle u cilj.'}</p>
+      <button class="btn" id="mAgain">Igraj ponovo</button>
+      <button class="btn alt" id="mMenu">Meni</button>`;
+  }else{
+    M.innerHTML=`<h2>Ne ljuti se! 😅</h2>
+      <p>${name} je prvi uveo sve figure.</p>
+      <button class="btn" id="mAgain">Pokušaj ponovo</button>
+      <button class="btn alt" id="mMenu">Meni</button>`;
+  }
+  $('modal').classList.add('on');
+  const close=()=>$('modal').classList.remove('on');
+  $('mAgain').onclick=()=>{close();newGame()};
+  $('mMenu').onclick=()=>{close();toMenu()};
 }
-function toMenu(){if(G)G.over=true;G=null;renderMenu();renderPicker();show('menu')}
+function toMenu(){if(G)G.over=true;G=null;renderMenu();show('menu')}
 $('back').onclick=toMenu;
+$('playBtn').onclick=()=>{sfx('step');newGame()};
 
-renderPicker();renderMenu();drawDice(0);
+syncSound();renderMenu();drawDice(0);
 </script>
 </body>
 </html>
